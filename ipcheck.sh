@@ -1,17 +1,18 @@
 #!/bin/bash
 
-echo $PUBIP
+OLDIP=$(cat /home/chen/.pubip)
 
-new_ip=$(curl ifconfig.me)
+echo $OLDIP
 
-echo $new_ip
+NEWIP=$(curl ifconfig.me)
 
-if [ $PUBIP = $new_ip ]
+echo $NEWIP
+
+if [ "$OLDIP" == "$NEWIP" ];
 then 
     echo "No IP change"
 else
     echo "IP changed! Exporting and emailing MasterChen"
-    PUBIP=$new_ip
-    export PUBIP
-    echo $new_ip | mailx -s "Chenhaus IP Info" <email>
+    echo $NEWIP > /home/chen/.pubip
+    echo $NEWIP | mailx -s "Chenhaus IP Info" <email>
 fi
